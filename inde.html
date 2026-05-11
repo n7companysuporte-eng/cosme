@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+  <title>N7 Rota Control</title>
+
+  <meta name="theme-color" content="#00ffae"/>
+
+  <link rel="manifest" href="manifest.json"/>
+
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+      font-family:'Poppins',sans-serif;
+    }
+
+    body{
+      background:#0f172a;
+      color:white;
+      overflow-x:hidden;
+    }
+
+    .bg{
+      position:fixed;
+      inset:0;
+      background:
+      radial-gradient(circle at top left,#00ffae33,transparent 30%),
+      radial-gradient(circle at bottom right,#00bfff33,transparent 30%),
+      #0f172a;
+      z-index:-1;
+    }
+
+    header{
+      padding:20px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      border-bottom:1px solid rgba(255,255,255,.08);
+      backdrop-filter:blur(10px);
+      position:sticky;
+      top:0;
+      background:#0f172acc;
+      z-index:999;
+    }
+
+    .logo{
+      display:flex;
+      align-items:center;
+      gap:15px;
+    }
+
+    .logo-icon{
+      width:60px;
+      height:60px;
+      border-radius:18px;
+      background:linear-gradient(135deg,#00ffae,#00bfff);
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      font-size:28px;
+      font-weight:800;
+      color:#00111d;
+      animation:float 3s ease-in-out infinite;
+      box-shadow:0 0 25px #00ffae55;
+    }
+
+    @keyframes float{
+      0%,100%{transform:translateY(0)}
+      50%{transform:translateY(-8px)}
+    }
+
+    .logo h1{
+      font-size:26px;
+      font-weight:800;
+    }
+
+    .logo span{
+      color:#00ffae;
+    }
+
+    .verse{
+      font-size:12px;
+      opacity:.7;
+    }
+
+    .banner{
+      margin:25px;
+      padding:35px;
+      border-radius:30px;
+      background:linear-gradient(135deg,#00ffae22,#00bfff22);
+      border:1px solid rgba(255,255,255,.08);
+    }
+
+    .banner h2{
+      font-size:42px;
+      font-weight:800;
+      line-height:1.2;
+    }
+
+    .banner h2 span{
+      color:#00ffae;
+    }
+
+    .banner p{
+      margin-top:15px;
+      max-width:800px;
+      opacity:.85;
+      line-height:1.7;
+    }
+
+    .container{
+      padding:25px;
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
+      gap:25px;
+    }
+
+    .card{
+      background:rgba(255,255,255,.05);
+      border:1px solid rgba(255,255,255,.08);
+      border-radius:28px;
+      padding:25px;
+      backdrop-filter:blur(12px);
+      transition:.3s;
+      box-shadow:0 10px 30px rgba(0,0,0,.3);
+    }
+
+    .card:hover{
+      transform:translateY(-6px);
+      border-color:#00ffae66;
+    }
+
+    .card h2{
+      margin-bottom:20px;
+      color:#00ffae;
+      font-size:24px;
+    }
+
+    .stats{
+      display:grid;
+      grid-template-columns:repeat(2,1fr);
+      gap:15px;
+    }
+
+    .stat{
+      background:#111827;
+      border-radius:20px;
+      padding:20px;
+      text-align:center;
+    }
+
+    .stat h3{
+      font-size:13px;
+      opacity:.7;
+      margin-bottom:10px;
+    }
+
+    .stat p{
+      font-size:26px;
+      font-weight:700;
+      color:#00ffae;
+    }
+
+    .input-group{
+      margin-bottom:15px;
+    }
+
+    .input-group label{
+      display:block;
+      margin-bottom:8px;
+      font-size:14px;
+      opacity:.8;
+    }
+
+    .input-group input,
+    .input-group textarea,
+    .input-group select{
+      width:100%;
+      padding:14px;
+      border:none;
+      border-radius:16px;
+      background:#1e293b;
+      color:white;
+      outline:none;
+    }
+
+    button{
+      width:100%;
+      padding:15px;
+      border:none;
+      border-radius:18px;
+      background:linear-gradient(135deg,#00ffae,#00bfff);
+      color:#00111d;
+      font-weight:700;
+      cursor:pointer;
+      transition:.3s;
+      margin-top:10px;
+    }
+
+    button:hover{
+      transform:scale(1.02);
+      box-shadow:0 0 25px #00ffae66;
+    }
+
+    .list{
+      max-height:300px;
+      overflow:auto;
+      margin-top:20px;
+    }
+
+    .item{
+      background:#111827;
+      padding:16px;
+      border-radius:18px;
+      margin-bottom:12px;
+    }
+
+    .item strong{
+      color:#00ffae;
+    }
+
+    table{
+      width:100%;
+      border-collapse:collapse;
+    }
+
+    table th,
+    table td{
+      padding:12px;
+      border-bottom:1px solid rgba(255,255,255,.08);
+      text-align:left;
+      font-size:14px;
+    }
+
+    .badge{
+      padding:6px 12px;
+      border-radius:999px;
+      font-size:12px;
+      font-weight:700;
+    }
+
+    .ok{
+      background:#00ffae22;
+      color:#00ffae;
+    }
+
+    .late{
+      background:#ff3b3b22;
+      color:#ff3b3b;
+    }
+
+    .warning{
+      background:#ffd00022;
+      color:#ffd000;
+    }
+
+    .ia{
+      background:linear-gradient(135deg,#00ffae22,#00bfff22);
+      border:1px solid #00ffae33;
+      padding:20px;
+      border-radius:22px;
+      margin-top:20px;
+    }
+
+    footer{
+      text-align:center;
+      padding:35px;
+      opacity:.7;
+      font-size:14px;
+    }
+
+    @media(max-width:700px){
+
+      .banner h2{
+        font-size:30px;
+      }
+
+    }
+
+  </style>
+</head>
+<body>
+
+<div class="bg"></div>
+
+<header>
+
+  <div class="logo">
+
+    <div class="logo-icon">
+      N7
+    </div>
+
+    <div>
+      <h1>N7 <span>Rota Control</span></h1>
+
+      <div class="verse">
+        "O Senhor é o meu pastor e nada me faltará."
+      </div>
+    </div>
+
+  </div>
+
+</header>
+
+<section class="banner">
+
+  <h2>
+    Controle Inteligente de
+    <span>Vendas, Rotas e Promissórias</span>
+  </h2>
+
+  <p>
+    Sistema profissional para equipes de vendas externas,
+    produtos naturais e cosméticos.
+  </p>
+
+</section>
+
+<section class="container">
+
+  <div class="card">
+
+    <h2>Dashboard</h2>
+
+    <div class="stats">
+
+      <div class="stat">
+        <h3>Vendas</h3>
+        <p id="totalVendas">R$0</p>
+      </div>
+
+      <div class="stat">
+        <h3>Clientes</h3>
+        <p id="totalClientes">0</p>
+      </div>
+
+      <div class="stat">
+        <h3>Promissórias</h3>
+        <p id="totalPromissorias">0</p>
+      </div>
+
+      <div class="stat">
+        <h3>Rotas</h3>
+        <p id="totalRotas">0</p>
+      </div>
+
+    </div>
+
+    <div class="ia">
+      <strong>IA Estratégica</strong>
+
+      <p id="iaText">
+        Cliente Maria está há 31 dias sem comprar produtos capilares.
+      </p>
+    </div>
+
+  </div>
+
+  <div class="card">
+
+    <h2>Clientes</h2>
+
+    <div class="input-group">
+      <label>Nome</label>
+      <input type="text" id="clienteNome">
+    </div>
+
+    <div class="input-group">
+      <label>Telefone</label>
+      <input type="text" id="clienteTelefone">
+    </div>
+
+    <div class="input-group">
+      <label>Cidade</label>
+      <input type="text" id="clienteCidade">
+    </div>
+
+    <button onclick="addCliente()">
+      Salvar Cliente
+    </button>
+
+    <div class="list" id="clientesList"></div>
+
+  </div>
+
+  <div class="card">
+
+    <h2>Registrar Venda</h2>
+
+    <div class="input-group">
+      <label>Cliente</label>
+      <input type="text" id="vendaCliente">
+    </div>
+
+    <div class="input-group">
+      <label>Produto</label>
+      <input type="text" id="vendaProduto">
+    </div>
+
+    <div class="input-group">
+      <label>Valor</label>
+      <input type="number" id="vendaValor">
+    </div>
+
+    <div class="input-group">
+      <label>Pagamento</label>
+
+      <select id="vendaForma">
+        <option>Pix</option>
+        <option>Dinheiro</option>
+        <option>Promissória</option>
+        <option>Cartão</option>
+      </select>
+    </div>
+
+    <button onclick="addVenda()">
+      Registrar Venda
+    </button>
+
+    <div class="list" id="vendasList"></div>
+
+  </div>
+
+  <div class="card">
+
+    <h2>Rotas</h2>
+
+    <div class="input-group">
+      <label>Vendedor</label>
+      <input type="text" id="rotaVendedor">
+    </div>
+
+    <div class="input-group">
+      <label>Cidade</label>
+      <input type="text" id="rotaCidade">
+    </div>
+
+    <div class="input-group">
+      <label>Data</label>
+      <input type="date" id="rotaData">
+    </div>
+
+    <button onclick="addRota()">
+      Criar Rota
+    </button>
+
+    <div class="list" id="rotasList"></div>
+
+  </div>
+
+  <div class="card">
+
+    <h2>Promissórias</h2>
+
+    <table>
+
+      <thead>
+        <tr>
+          <th>Cliente</th>
+          <th>Valor</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+
+      <tbody id="promissoriasTable"></tbody>
+
+    </table>
+
+  </div>
+
+</section>
+
+<footer>
+  N7 Company © Sistema Inteligente Comercial
+</footer>
+
+<script>
+
+  let clientes = JSON.parse(localStorage.getItem('clientes')) || [];
+  let vendas = JSON.parse(localStorage.getItem('vendas')) || [];
+  let rotas = JSON.parse(localStorage.getItem('rotas')) || [];
+
+  function salvar(){
+
+    localStorage.setItem('clientes',JSON.stringify(clientes));
+    localStorage.setItem('vendas',JSON.stringify(vendas));
+    localStorage.setItem('rotas',JSON.stringify(rotas));
+
+  }
+
+  function atualizar(){
+
+    document.getElementById('totalClientes').innerText =
+      clientes.length;
+
+    document.getElementById('totalRotas').innerText =
+      rotas.length;
+
+    let total = vendas.reduce((acc,v)=>acc + Number(v.valor),0);
+
+    document.getElementById('totalVendas').innerText =
+      "R$ " + total.toFixed(2);
+
+    let promissorias =
+      vendas.filter(v=>v.forma === 'Promissória');
+
+    document.getElementById('totalPromissorias').innerText =
+      promissorias.length;
+
+  }
+
+  function renderClientes(){
+
+    let html = '';
+
+    clientes.forEach(c=>{
+
+      html += `
+        <div class="item">
+          <strong>${c.nome}</strong><br>
+          ${c.telefone}<br>
+          ${c.cidade}
+        </div>
+      `;
+
+    });
+
+    document.getElementById('clientesList').innerHTML = html;
+
+  }
+
+  function renderVendas(){
+
+    let html = '';
+
+    vendas.forEach(v=>{
+
+      html += `
+        <div class="item">
+          <strong>${v.cliente}</strong><br>
+          ${v.produto}<br>
+          R$ ${v.valor}<br>
+          ${v.forma}
+        </div>
+      `;
+
+    });
+
+    document.getElementById('vendasList').innerHTML = html;
+
+    let tabela = '';
+
+    vendas
+    .filter(v=>v.forma === 'Promissória')
+    .forEach(v=>{
+
+      tabela += `
+        <tr>
+          <td>${v.cliente}</td>
+          <td>R$ ${v.valor}</td>
+          <td>
+            <span class="badge warning">
+              Em Aberto
+            </span>
+          </td>
+        </tr>
+      `;
+
+    });
+
+    document.getElementById('promissoriasTable').innerHTML = tabela;
+
+  }
+
+  function renderRotas(){
+
+    let html = '';
+
+    rotas.forEach(r=>{
+
+      html += `
+        <div class="item">
+          <strong>${r.vendedor}</strong><br>
+          ${r.cidade}<br>
+          ${r.data}
+        </div>
+      `;
+
+    });
+
+    document.getElementById('rotasList').innerHTML = html;
+
+  }
+
+  function addCliente(){
+
+    let cliente = {
+
+      nome:document.getElementById('clienteNome').value,
+      telefone:document.getElementById('clienteTelefone').value,
+      cidade:document.getElementById('clienteCidade').value
+
+    };
+
+    clientes.push(cliente);
+
+    salvar();
+    renderClientes();
+    atualizar();
+
+    alert('Cliente salvo!');
+
+  }
+
+  function addVenda(){
+
+    let venda = {
+
+      cliente:document.getElementById('vendaCliente').value,
+      produto:document.getElementById('vendaProduto').value,
+      valor:document.getElementById('vendaValor').value,
+      forma:document.getElementById('vendaForma').value
+
+    };
+
+    vendas.push(venda);
+
+    salvar();
+    renderVendas();
+    atualizar();
+
+    alert('Venda registrada!');
+
+  }
+
+  function addRota(){
+
+    let rota = {
+
+      vendedor:document.getElementById('rotaVendedor').value,
+      cidade:document.getElementById('rotaCidade').value,
+      data:document.getElementById('rotaData').value
+
+    };
+
+    rotas.push(rota);
+
+    salvar();
+    renderRotas();
+    atualizar();
+
+    alert('Rota criada!');
+
+  }
+
+  atualizar();
+  renderClientes();
+  renderVendas();
+  renderRotas();
+
+  if('serviceWorker' in navigator){
+
+    navigator.serviceWorker.register('service-worker.js');
+
+  }
+
+</script>
+
+</body>
+</html>
